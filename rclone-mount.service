@@ -1,0 +1,18 @@
+# /etc/systemd/system/rclone-mount.service
+# /etc/fuse.conf - user_allow_other
+
+[Unit]
+Description=GSuite drive mount
+Documentation=http://rclone.org/docs/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=debian-transmission
+Group=debian-transmission
+ExecStart=/usr/bin/rclone mount --allow-non-empty --allow-other --config=/var/lib/transmission-daemon/rclone.conf GSuite:/ /mnt/GSuite
+ExecStop=/bin/fusermount -u /mnt/GSuite
+
+[Install]
+WantedBy=multi-user.target
